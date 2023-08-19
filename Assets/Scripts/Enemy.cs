@@ -20,14 +20,8 @@ public class Enemy : MonoBehaviour
         _attakTrigger.TriggerAttack += Attack;
     }
 
-    private void Start()
-    {
-
-    }
-
-
     private void Attack()
     {
-        _animator.SetTrigger("IsAttack");
+        _animator.Play("Attack");
     }
 }
