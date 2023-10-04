@@ -4,15 +4,16 @@ using UnityEngine.U2D.Animation;
 [RequireComponent(typeof(SpriteSkin))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(EnemyMover))]
 
 public class Enemy : MonoBehaviour
 {
-    private AttackTrigger _attakTrigger;
+    private AttackTriggerEnemy _attakTrigger;
     private Animator _animator;
 
     private void Awake()
     {
-        _attakTrigger = GetComponentInChildren<AttackTrigger>();
+        _attakTrigger = GetComponentInChildren<AttackTriggerEnemy>();
         _animator = GetComponent<Animator>();
     }
     private void OnEnable()

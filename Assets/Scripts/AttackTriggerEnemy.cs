@@ -1,12 +1,13 @@
+using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
-
-public class PlayerKillTrigger : MonoBehaviour
+public class AttackTriggerEnemy : MonoBehaviour
 {
+    public event Action TriggerAttack;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Player>(out Player player))
-            Destroy(player.gameObject);
+            TriggerAttack?.Invoke();
     }
 }
