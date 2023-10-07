@@ -16,9 +16,15 @@ public class Enemy : MonoBehaviour
         _attakTrigger = GetComponentInChildren<AttackTriggerEnemy>();
         _animator = GetComponent<Animator>();
     }
+
     private void OnEnable()
     {
         _attakTrigger.TriggerAttack += Attack;
+    }
+
+    private void OnDisable()
+    {
+        _attakTrigger.TriggerAttack -= Attack;
     }
 
     private void Attack()

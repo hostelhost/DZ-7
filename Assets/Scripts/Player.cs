@@ -7,7 +7,4 @@ using UnityEngine.U2D.Animation;
 [RequireComponent(typeof(PlayerMover))]
 [RequireComponent(typeof(AttackTriggerPlayer))]
 
-public class Player : MonoBehaviour
-{
-
-}
+public class Player : MonoBehaviour { }
