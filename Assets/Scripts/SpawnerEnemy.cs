@@ -1,40 +1,44 @@
 using System.Collections;
+using System.Transactions;
 using UnityEngine;
 
 public class SpawnerEnemy : MonoBehaviour
 {
     [SerializeField] private Enemy _enemy;
 
-    private Transform _transform;
-
-    private void Awake()
-    {
-        _transform = GetComponent<Transform>();
-    }
+    private float _intervalBetweenSpawns = 5f;
+    private int _maximumEnemy = 2;
 
     private void Start()
     {
         StartCoroutine(StartCreating());
     }
 
-    private IEnumerator StartCreating()
+    private void Update()
     {
-        float intervalBetweenSpawns = 5f;
-        int maximumEnemy = 1;
-        WaitForSeconds waitForSeconds = new WaitForSeconds(intervalBetweenSpawns);
-
-        while (true)
+        if (IsEnoughEnemies() == false)
         {
-            yield return waitForSeconds;
-
-            if (CheckMaximumNumberEnemies(maximumEnemy))
-                Instantiate<Enemy>(_enemy, _transform.position, Quaternion.identity);
+            StartCoroutine(StartCreating());
         }
     }
 
-    private bool CheckMaximumNumberEnemies(int maximum)
+    private IEnumerator StartCreating()
+    {
+        WaitForSeconds waitForSeconds = new WaitForSeconds(_intervalBetweenSpawns);
+
+        while (IsEnoughEnemies() == false)
+        {
+            Instantiate<Enemy>(_enemy, transform.position, Quaternion.identity);
+
+            yield return waitForSeconds;
+        }
+
+        StopCoroutine(StartCreating());
+    }
+
+    private bool IsEnoughEnemies()
     {
         Enemy[] enemys = FindObjectsOfType<Enemy>();
-        return enemys.Length < maximum;
+        return enemys.Length == _maximumEnemy;
     }
 }

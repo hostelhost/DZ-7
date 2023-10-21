@@ -1,10 +1,13 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+[RequireComponent(typeof(Transform))]
 
 public class SpawnerPlayer : MonoBehaviour
 {
     [SerializeField] private Player _player;
 
+    private int _maximumPlayersOnStage = 1;
     private Transform _transform;
 
     private void Awake()
@@ -12,29 +15,15 @@ public class SpawnerPlayer : MonoBehaviour
         _transform = GetComponent<Transform>();
     }
 
-    private void Start()
+    private void Update()
     {
-        StartCoroutine(StartCreating());
+        if (CheckMaximumPlayers())
+            Instantiate<Player>(_player, transform.position, Quaternion.identity);
     }
 
-    private IEnumerator StartCreating()
-    {
-        float intervalBetweenSpawns = 10f;
-        int maximumPlayer = 1;
-        WaitForSeconds waitForSeconds = new WaitForSeconds(intervalBetweenSpawns);
-
-        while (true)
-        {
-            yield return waitForSeconds;
-
-            if (CheckMaximumPlayers(maximumPlayer))
-                Instantiate<Player>(_player, transform.position, Quaternion.identity);
-        }
-    }
-
-    private bool CheckMaximumPlayers(int maximum)
+    private bool CheckMaximumPlayers()
     {
         Player[] player = FindObjectsOfType<Player>();
-        return player.Length < maximum;
+        return player.Length < _maximumPlayersOnStage;
     }
 }
